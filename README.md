@@ -18,6 +18,7 @@ Eksamensprosjekt DAT
     pip install -r requirements.txt
     python3 app.py
 
+
 ## Project setup
 ```
 npm install
@@ -64,5 +65,5 @@ Nye brukere blir lagret i databasen.
 - Når man registreres som ny bruker må passordet være lengre enn 6 tegn, ellers kommer det oppe en feilmelding. Alle feltene kreves å bli fylt ut.
 
 - Vue-Router brukes og har flere routes:
-    * Home, Activities, Login, Register, NotFound
+    - Home, Activities, Login, Register, NotFound
 
