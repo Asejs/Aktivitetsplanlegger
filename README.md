@@ -19,10 +19,10 @@ Eksamensprosjekt DAT310
     python3 app.py
 
 
+```
+
 * aktivitetsplanlegger-cors: Flask API that can be accessed using Cross Origin Requests.
 * aktivitetsplanlegger-cli: VueCLI application that accesses the Flask API.
-
-```
 
 
 ## Project setup
