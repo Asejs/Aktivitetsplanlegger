@@ -51,7 +51,7 @@ Den er en "Single page application (SPA)" som kommuniserer med Flask serveren vi
 - "Utforsk aktiviteter"-siden justeres etter vindusstørrelsen der bildene til aktivitene blir endret. Her vises aktivitetsdataen.
 
 - Først etter brukeren er logget inn, vises "Legg til ny aktivitet"-knappen.
-Brukerens brukernavn, fornavn og etternavn lagres i sessionStorage.
+Brukerens brukernavn, fornavn og etternavn lagres i sessionStorage. For å lett få tilgang på informasjon om pålogget bruker.
 
 - Hvis man ikke er registrert som bruker kan man registrere seg ved å trykke inn på "Logg inn", og videre på "Registrer ny bruker".
 Nye brukere blir lagret i databasen.
@@ -59,8 +59,8 @@ Nye brukere blir lagret i databasen.
 - Det lastes opp et "default-bilde" når en ny aktivitet blir lagt til.
 - Det er mulig å filtrere/søke i aktivitetene etter tittel, brukernavn, sted og beskrivelsen.
 
-- Når man registreres som ny bruker må passordet være lengre enn 6 tegn, ellers kommer det oppe en feilmelding. Alle feltene kreves å bli fylt ut.
+- Når man registreres som ny bruker må passordet være lengre enn 6 tegn, ellers kommer det oppe en feilmelding. Det kreves at alle feltene i registreringen må fylles ut.
 
-- Vue-Router brukes og har flere routes:
+- Vue-Router har flere routes:
     * Home, Activities, Login, Register, NotFound
 
