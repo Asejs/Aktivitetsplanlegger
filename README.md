@@ -18,6 +18,10 @@ Eksamensprosjekt DAT310
     pip install -r requirements.txt
     python3 app.py
 
+
+* aktivitetsplanlegger-cors: Flask API that can be accessed using Cross Origin Requests.
+* aktivitetsplanlegger-cli: VueCLI application that accesses the Flask API.
+
 ```
 
 
@@ -37,9 +41,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
 ## Liste over funksjonalitet
-- Applikasjonen bruker Flask WebServer med SQLite som database (med eksempeldata).
+- Applikasjonen bruker Vue-CLI sammen med Flask API.
 Den er en "Single page application (SPA)" som kommuniserer med Flask serveren via AJAX kall.
-- 
+
 - Databasen inneholder to tabeller i tillegg til users-databasen; activities og participation.
 
 - "Homepage"-siden inneholder en banner og layout'en justeres etter vindusstørrelsen.
@@ -58,5 +62,5 @@ Nye brukere blir lagret i databasen.
 - Når man registreres som ny bruker må passordet være lengre enn 6 tegn, ellers kommer det oppe en feilmelding. Alle feltene kreves å bli fylt ut.
 
 - Vue-Router brukes og har flere routes:
-    - Home, Activities, Login, Register, NotFound
+    * Home, Activities, Login, Register, NotFound
 
