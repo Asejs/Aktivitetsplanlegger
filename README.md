@@ -1,5 +1,5 @@
 # Aktivitetsplanlegger
-Eksamensprosjekt DAT
+Eksamensprosjekt DAT310
 
 ## Project setup
 ```
@@ -17,6 +17,7 @@ Eksamensprosjekt DAT
     cd aktivitetsplanlegger-cors
     pip install -r requirements.txt
     python3 app.py
+
 ```
 
 
@@ -30,24 +31,15 @@ npm install
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-```
 
 ## Liste over funksjonalitet
 - Applikasjonen bruker Flask WebServer med SQLite som database (med eksempeldata).
 Den er en "Single page application (SPA)" som kommuniserer med Flask serveren via AJAX kall.
+- 
 - Databasen inneholder to tabeller i tillegg til users-databasen; activities og participation.
 
 - "Homepage"-siden inneholder en banner og layout'en justeres etter vindusstørrelsen.
