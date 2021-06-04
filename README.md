@@ -1,7 +1,7 @@
 # Aktivitetsplanlegger
 Eksamensprosjekt DAT310
 
-## Project setup
+## How to run
 ```
 1. Run the client-side Vue app in a terminal window
 
