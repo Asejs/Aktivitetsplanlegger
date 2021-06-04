@@ -17,6 +17,7 @@ Eksamensprosjekt DAT
     cd aktivitetsplanlegger-cors
     pip install -r requirements.txt
     python3 app.py
+```
 
 
 ## Project setup
