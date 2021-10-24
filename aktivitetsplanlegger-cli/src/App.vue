@@ -1,4 +1,6 @@
 <template>
+
+<div id="container">
   <header>
     <div id="logo">
         <router-link to="/"><img src="@/assets/logo.png"/></router-link>
@@ -11,12 +13,11 @@
             <li v-if="loggedIn" @click="logout" style="color: white"><strong>Logg ut</strong></li>
         </ul>
     </nav>
-
   </header>
 
-  <!-- i router view kommer viewet; feks: home/login osv. -->
   <router-view/>
 
+</div>
 
 </template>
 
@@ -31,6 +32,7 @@ export default {
         }
     },
     methods: {
+        // logout
         async logout() {
             let response = await fetch(baseURL + "logout");
             if (response.status != 200){
@@ -42,6 +44,7 @@ export default {
         }
     },
     created() {
+        // check if the user is logged in
         if (sessionStorage["username"]) {
             this.loggedIn = true
     }
@@ -51,23 +54,11 @@ export default {
 </script>
 
 
-<!-- --------------------------------------------------- -->
-
-
 
 
 <style>
-
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap');
-
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@700&display=swap');
 
 /* ----------------------------------------------- */
 
@@ -456,6 +447,7 @@ main {
 
 
 /* ----------------------------------------------- */
+
 #activity_list {
     margin-bottom: 40px;
     background-color: white;
@@ -705,20 +697,5 @@ label {
     display: table;
     clear: both;
 }
-
-
-
-/* ----------------------------------------------- */
-
-/* If you use plain CSS your layout should at least adjust to window sizes between 1800px and 800px.
-If you use bootstrap, your layout should be responsive adjusting also to phone sized displays, e.g. 375px.
-Your layout should contain some kind of background or banner images.
-
-
- */
-/* når width blir mindre enn 600px */
-@media screen and (max-width: 600px) {
-}
-
 
 </style>

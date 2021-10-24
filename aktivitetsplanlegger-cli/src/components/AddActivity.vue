@@ -28,7 +28,7 @@
                     <label for="date">Dato:</label>
                     </div>
                     <div class="col-75">
-                    <input type="date" id="date" name="date" style="max-height: 40px" min="2021-04-22" max="2030-01-01" required v-model="date">
+                    <input type="date" id="date" name="date" style="max-height: 40px" min="2021-06-04" max="2030-01-01" required v-model="date">
                     </div>
                 </div>
                 <div class="row">
@@ -111,13 +111,8 @@ let baseURL = "http://127.0.0.1:5000/";
             else {
                 console.log("Lagt til aktivitiet: ", this.title)
                 alert("Lagt til aktivitet.");
-                //this.$router.push('/activities');
-                //this.$router.go;
             }
-            console.log(response);
-
             window.location.reload(true)
-            
         },
       }
       /*

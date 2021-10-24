@@ -13,11 +13,6 @@
 
 
         <div id="activity_top">
-        <!--
-        <div id="favorite_icon">
-            <img src="@/assets/bookmark.png" style="width:50px"/>
-        </div>
-        -->
             <div id="edit_buttons" v-if="loggedInUsername == activity.username">
                 <div id="delete_button" @click="removeItem(activity)">
                     <i class="fa fa-times fa-2x"></i>
@@ -37,10 +32,6 @@
             <div id="activity_buttons">
                 <div class="flex">
                     <input type="submit" @click.once="signMeUp" value="Meld meg på">
-                </div>
-                
-                <div id="participants">
-                    <h4> <i class="fa fa-users"></i>Deltakere: 0/20</h4>
                 </div>
             </div>
         </div>
@@ -66,18 +57,15 @@
                 activity: "",
                 search: "",       
                 loggedInUsername: ""   
-                /*sortBy: "name",
-                sortDirection: "asc"*/
             }
         },
         methods: {
             // sign up button
             signMeUp() {
                 console.log("signup")
-
             },
             async get_activities() {
-                // Get activites
+                // get activites
                 let response = await fetch(baseURL + "activities_get");
                 if (response.status != 200){
                     console.log("Failed to get activities");
@@ -86,7 +74,7 @@
                 let result = await response.json();
                 this.activities = result;
             },
-            // remove selected activity
+            // remove activity
             async removeItem(activity) {
                 var c = confirm("Are you sure you want to delete this entry?");
                 if (c) {
@@ -105,21 +93,15 @@
                 }
                 this.get_activities()
             },
-
-            // edit selected activity
+            // edit activity
             edit() {
                 console.log("edit")
             }
-            // sort the activities
-            /*sort(activity) {
-                if(activity === this.sortBy) {
-                    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-                }
-                this.sortBy = s;
-            },*/
         },
         async created() {
+            // get activites (without reloading the page)
             this.get_activities()
+
             // Check if the user is logged in
             if (sessionStorage["username"]) {
                 this.loggedInUsername = sessionStorage.getItem("username")

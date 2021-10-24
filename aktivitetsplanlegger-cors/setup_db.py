@@ -2,7 +2,7 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 
 def create_user_table(conn):
-    """Create table."""
+    """Create user table."""
     cur = conn.cursor()
     try:
         sql = ("CREATE TABLE users ("
@@ -28,7 +28,7 @@ def create_user_table(conn):
 
 
 def create_activity_table(conn):
-    """Create table."""
+    """Create activity table."""
     cur = conn.cursor()
     try:
         sql = ("CREATE TABLE activities ("
@@ -53,7 +53,7 @@ def create_activity_table(conn):
 
 
 def create_participation_table(conn):
-    """Create table."""
+    """Create participation table."""
     cur = conn.cursor()
     try:
         sql = ("CREATE TABLE participation ("
@@ -70,9 +70,7 @@ def create_participation_table(conn):
         cur.close()
 
 
-# -----------------------------------------------------
-
-
+# add user
 def add_user(conn, username, firstname, lastname, email, passwordhash, role):
     """Add user. Returns the new user id"""
     cur = conn.cursor()
@@ -88,31 +86,11 @@ def add_user(conn, username, firstname, lastname, email, passwordhash, role):
         return cur.lastrowid
     finally:
         cur.close()
-'''
-try:
-                # ... Collecting form info ...
-
-                cur.execute("SELECT * FROM users WHERE name = ?", (username))
-
-                if cur.fetchone() is not None:
-                    flash("That username is already taken...")
-                    return render_template('register.html')
-                else:
-                    cur.execute("INSERT INTO users (name,password,email) VALUES (?,?,?)",(username,passwordencr,email) )
-                    con.commit()
-                    flash (...)
-             except:
-                 con.rollback()
-
-             finally:
-                 session['logged_in'] = True
-                 session['username'] = username
-                 # ... mailing code ...
-'''
 
 
+# add new activity
 def add_new_activity(conn, username, title, date, location, description):
-    """Add activity. Returns the new activity_id"""
+    """Add new activity. Returns the new activity_id"""
     cur = conn.cursor()
     try:
         sql = ("INSERT INTO activities (username, title, date, location, description) VALUES (?,?,?,?,?)")
@@ -127,6 +105,7 @@ def add_new_activity(conn, username, title, date, location, description):
     finally:
         cur.close()
 
+# add participation
 def add_new_pacticipation(conn, userid, activity_id):
     """Add particiapation"""
     cur = conn.cursor()
@@ -143,7 +122,7 @@ def add_new_pacticipation(conn, userid, activity_id):
     finally:
         cur.close()
 
-
+# update activity
 def update_activity(conn, activity, userid):
     """Update activity"""
     cur = conn.cursor()
@@ -152,9 +131,9 @@ def update_activity(conn, activity, userid):
                 "title=?, date=?, location=?, description=?"
                 "WHERE activity_id = ? AND userid = ?")
         cur.execute(sql, (activity["title"],
-                        activity.get("date",None), 
-                        activity.get("location",None),
-                        activity.get("description",None), 
+                        activity.get("date", None), 
+                        activity.get("location", None),
+                        activity.get("description", None), 
                         userid))
         conn.commit()
     except sqlite3.Error as err:
@@ -166,7 +145,7 @@ def update_activity(conn, activity, userid):
     finally:
         cur.close()
 
-
+# delete activity
 def delete_activity(conn, activity_id):
     """Delete activity."""
     cur = conn.cursor()
@@ -184,7 +163,7 @@ def delete_activity(conn, activity_id):
         cur.close()
 
 
-# Get all activites
+# get all activites
 def get_all_activities(conn):
     """Get all activites"""
     cur = conn.cursor()
@@ -209,6 +188,7 @@ def get_all_activities(conn):
         cur.close()
 
 
+# get user acitvities
 def get_user_activities(conn, userid):
     """Get user details by name."""
     cur = conn.cursor()
@@ -231,7 +211,7 @@ def get_user_activities(conn, userid):
     finally:
         cur.close()
 
-
+# get user by name
 def get_user_by_name(conn, username):
     """Get user details by name."""
     cur = conn.cursor()
@@ -247,7 +227,7 @@ def get_user_by_name(conn, username):
                 "lastname": lastname
             }
         else:
-            #user does not exist
+            # if user does not exist
             return {
                 "userid": None,
                 "username": None,
@@ -259,7 +239,7 @@ def get_user_by_name(conn, username):
     finally:
         cur.close()
 
-
+# get user by id
 def get_user_by_id(conn, userid):
     """Get user details by id."""
     cur = conn.cursor()
@@ -275,7 +255,7 @@ def get_user_by_id(conn, userid):
                 "lastname": lastname
             }
         else:
-            #user does not exist
+            #if user does not exist
             return {
                 "userid": None,
                 "username": None,
@@ -287,7 +267,7 @@ def get_user_by_id(conn, userid):
     finally:
         cur.close()
 
-
+# get hash for login
 def get_hash_for_login(conn, username):
     """Get user details from id."""
     cur = conn.cursor()
@@ -311,30 +291,31 @@ if __name__ == "__main__":
     except sqlite3.Error as err:
         print(err)
     else:
-        #drop_table(conn)
-
+        # create user, activity and participation table:
         create_user_table(conn)
         create_activity_table(conn)
         create_participation_table(conn)
 
-        add_user(conn, "johndoe", "John", "Doe", "johndoe@gmail.com", generate_password_hash("Joe123"), "admin")
-        add_user(conn, "maryjane", "Mary", "Jane", "maryjane@gmail.com", generate_password_hash("LoveDogs"), "admin")
+        # example user data:
+        add_user(conn, "johndoe", "John", "Doe", "johndoe@gmail.com", generate_password_hash("Joe123"), "user")
+        add_user(conn, "maryjane", "Mary", "Jane", "maryjane@gmail.com", generate_password_hash("LoveDogs"), "user")
+        add_user(conn, "test", "Test", "Bruker", "test@gmail.com", generate_password_hash("passord"), "user")
         
-        add_new_activity(conn, "johndoe", "Joggetur rundt Mosvannet",  "2021-07-01", "Stavanger", "Dette er en aktivitet.")
-        add_new_activity(conn, "maryjane", "Tur til Preikestolen",  "2021-07-01", "Stavanger", "Dette er en aktivitet2.")
-        add_new_activity(conn, "johndoe", "Tur på Sola Strand",  "2021-07-01", "Stavanger", "Dette er en aktivitet2.")
+        
+        # add new activities:
+        add_new_activity(conn, "johndoe", "Joggetur rundt Mosvannet",  "2021-07-01", "Stavanger", "Bli med på en rolig joggetur rundt Mosvannet. Starter kl 10 om morgenen.")
+        add_new_activity(conn, "maryjane", "Tur til Preikestolen",  "2021-07-01", "Preikestolen", "SIS arrangerer tur til Preikestolen. Mer informasjon kommer!")
+        add_new_activity(conn, "johndoe", "Digital Paint'n Sip",  "2021-07-08", "Online", "Hei! Noen som har lyst til å bli med på Paint'n Sip den 8.juli? Meld deg på!")
 
         add_new_pacticipation(conn, 1, 1)
 
-        print("USER",get_user_by_id(conn, 1))
+        # test get_user_by_id and get_user_by_name:
+        print("USER", get_user_by_id(conn, 1))
+        print("USER", get_user_by_name(conn, "johndoe"))
 
-        print("USER",get_user_by_name(conn, "johndoe"))
-        
+        # test get_hash_for_login:
         hash = get_hash_for_login(conn, "maryjane")
         print("Check password: {}".format(check_password_hash(hash,"LoveDogs")))
 
-        delete_activity(conn, 1)
-
-        print(get_all_activities(conn))
-        
+        # close connection to database
         conn.close()

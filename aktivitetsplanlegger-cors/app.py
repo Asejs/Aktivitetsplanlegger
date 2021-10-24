@@ -1,8 +1,4 @@
-# This app only handles AJAX requests.
-# Open dist/index.html in browser.
-
 from setup_db import *
-from time import sleep
 from flask import Flask, request, redirect, url_for, flash, session, g, abort, jsonify
 from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -13,20 +9,15 @@ import os
 from flask import Flask, render_template, send_from_directory
 from werkzeug.utils import secure_filename
 
-
 app = Flask(__name__)
+# allow cross-origin requests (CORS)
 cors = CORS()
-cors.init_app(app)
-CORS(app, supports_credentials=True)
 
-app.config['CORS_HEADERS'] = 'Content-Type'
-
+# secret key for session
 app.secret_key = 'A213FB1557589757D5ACEED'
 
-@app.route('/ping', methods=['GET'])
-def ping_pong():
-    return jsonify('pong!')
-    
+
+# add headers to use sessions on cross-origin requests
 @app.after_request
 def add_header(response):
     response.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080'
@@ -36,14 +27,14 @@ def add_header(response):
     return response
 
 
-
+# get database
 def get_db():
     if not hasattr(g, "_database"):
         print("create connection")
         g._database = sqlite3.connect("database.db")
     return g._database
 
-
+# close database
 @app.teardown_appcontext
 def teardown_db(error):
     """Closes the database at the end of the request."""
@@ -53,72 +44,40 @@ def teardown_db(error):
         db.close()
 
 
-
+# check if login is valid
 def valid_login(username, password):
     """Checks if username-password combination is valid."""
-    # user password data typically would be stored in a database
     conn = get_db()
     hash = get_hash_for_login(conn, username)
-    # the generate a password hash use the line below:
-    #generate_password_hash("rawPassword")
     if hash != None:
         return check_password_hash(hash, password)
     return False
 
 
-# Login
+# login
 @app.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
     if not valid_login(data.get("username", ""), data.get("password", "")):
         abort(404)
     conn = get_db()
-    user = get_user_by_name(conn, data["username"]) #[userid, username]
-    print("user", user)
+    user = get_user_by_name(conn, data["username"])
+    # session
     session["userid"] = user["userid"]
-    # if 'stylePreferences' in session:
-        #return {"valid": True, "preferences": session["stylePreferences"]}
-    #print("User: {} validated".format(data["username"]))
-    #user["activites"] = get_user_activites(conn, user["userid"])
-    #print(user)
     return user
 
-# Logout
+
+# logout
 @app.route("/logout")
 def logout():
-    print(session)
     session.clear()
-    session.pop("userid", None)
-    session.pop("username", None)
-    session.pop("role", None)
-    print(session)
     print("logged out")
     if "username" in session:
         del session["username"]
-    return "OK"
+    return ""
 
 
-# The first three routes do not fit into a rest API. 
-"""
-
-@app.route("/login", methods=["POST"])
-def login():
-    data = request.get_json()
-    print(data)
-    if not valid_login(data.get("username", ""), data.get("password", "")):
-        abort(404)
-    conn = get_db()
-    user = get_user_by_name(conn,data["username"])
-    #user["activities"] = get_user_activities(conn, user["userid"])
-    #print(user)
-    session["userid"] = user["userid"]
-    return user
-
-"""
-
-
-
-# Register
+# register
 @app.route("/signup", methods=["POST"])
 def signup_post():
     data = request.get_json()
@@ -129,25 +88,10 @@ def signup_post():
     print("user", user)
     session["username"] = data["username"]
     print(session)
-    return "OK"
-
-'''
-@app.route("/signup", methods=["POST"])
-def signup():
-    data = request.get_json()
-    print(data)
-    hash = generate_password_hash(data["password"])
-    conn = get_db()
-    user = add_user(conn, data["username"], data["firstname"], data["lastname"], data["email"], hash)
-    if id == -1:
-        flash("Username already taken")
-    session["username"] = data["username"]
-    print("session:", session)
     return ""
-'''
 
-# Here comes the rest API for activities.
-# Get user:
+
+# get user
 @app.route("/user", methods=["GET"])
 def get_user(username):
     if userid == None:
@@ -157,8 +101,7 @@ def get_user(username):
     return user
 
 
-
-# Get activities:
+# get activities:
 @app.route("/activities_get", methods=["GET"])
 def get_activities():
     conn = get_db()
@@ -166,9 +109,7 @@ def get_activities():
     return json.dumps(activities)
 
 
-
-
-# Add activity:
+# add activity:
 @app.route("/add_activity_post", methods=["POST"])
 def add_activity_post():
     newactivity = request.get_json()
@@ -177,36 +118,23 @@ def add_activity_post():
     return ""
 
 
-
-
-
-
-
-
-
-
-# Set activity:
+# set activity:
 @app.route("/activities/<activity_id>", methods=["PUT"])
 def set_activity(activity_id):
     userid = session.get("userid", None)
     if userid == None:
         abort(404)
-    
     activity = request.get_json()
     if len(activity.get("title", "")) == 0 or activity.get("activity_id", "-1") != activity_id:
         abort(400)
-
     conn = get_db()
     affected = update_activity(conn, activity, userid)
-
     if affected == 0:
         abort(400)
-
-    return "OK"
-
+    return ""
 
 
-# Delete activity:
+# delete activity:
 @app.route("/del_activities/<activity_id>", methods=["DELETE"])
 def del_activity(activity_id):
     print(activity_id)
@@ -214,7 +142,7 @@ def del_activity(activity_id):
     affected = delete_activity(conn, activity_id)
     if affected == 0:
         abort(400)
-    return "OK"
+    return ""
 
 
 

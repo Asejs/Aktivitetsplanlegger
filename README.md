@@ -1,5 +1,5 @@
 # Aktivitetsplanlegger
-Eksamensprosjekt DAT310
+DAT310 Eksamensprosjekt
 
 ## How to run
 ```
@@ -51,7 +51,7 @@ Den er en "Single page application (SPA)" som kommuniserer med Flask serveren vi
 - "Utforsk aktiviteter"-siden justeres etter vindusstørrelsen der bildene til aktivitene blir endret. Her vises aktivitetsdataen.
 
 - Først etter brukeren er logget inn, vises "Legg til ny aktivitet"-knappen.
-Brukerens brukernavn, fornavn og etternavn lagres i sessionStorage. For å lett få tilgang på informasjon om pålogget bruker.
+Brukerens brukernavn, fornavn og etternavn lagres i sessionStorage, for å lett få tilgang på informasjon om pålogget bruker.
 
 - Hvis man ikke er registrert som bruker kan man registrere seg ved å trykke inn på "Logg inn", og videre på "Registrer ny bruker".
 Nye brukere blir lagret i databasen.
@@ -63,4 +63,8 @@ Nye brukere blir lagret i databasen.
 
 - Vue-Router har flere routes:
     * Home, Activities, Login, Register, NotFound
+
+
+For test av login:
+- Kan logge inn med brukernavn: JohnDoe, passord: Joe123.
 
