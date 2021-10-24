@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@fortawesome/vue-fontawesome": "^3.0.0-3",
+    "caniuse-lite": "^1.0.30001271",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "vue": "^3.0.0",
