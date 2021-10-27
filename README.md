@@ -2,7 +2,7 @@
 DAT310 Eksamensprosjekt
 
 ## How to run
-```
+
 1. Run the client-side Vue app in a terminal window
 
 
@@ -26,7 +26,6 @@ python3 app.py
 
 
 
-```
 
 * aktivitetsplanlegger-cors: Flask API that can be accessed using Cross Origin Requests.
 * aktivitetsplanlegger-cli: VueCLI application that accesses the Flask API.
