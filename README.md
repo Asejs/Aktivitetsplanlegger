@@ -27,23 +27,9 @@ python3 app.py
 
 
 
-* aktivitetsplanlegger-cors: Flask API that can be accessed using Cross Origin Requests.
-* aktivitetsplanlegger-cli: VueCLI application that accesses the Flask API.
+* aktivitetsplanlegger-cors:  Flask API that can be accessed using Cross Origin Requests.
+* aktivitetsplanlegger-cli:   VueCLI application that accesses the Flask API.
 
-
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
 ## Liste over funksjonalitet
