@@ -5,18 +5,25 @@ DAT310 Eksamensprosjekt
 ```
 1. Run the client-side Vue app in a terminal window
 
-    Commands:
-    cd aktivitetsplanlegger-cli
-    npm run serve
 
-    
+Commands:
+```
+npm install
+cd aktivitetsplanlegger-cli
+npm run serve
+```
+
+
 
 2. Run the server-side Flask app in a different terminal window
 
-    Commands:
-    cd aktivitetsplanlegger-cors
-    pip install -r requirements.txt
-    python3 app.py
+Commands:
+```
+cd aktivitetsplanlegger-cors
+pip install -r requirements.txt
+python3 app.py
+```
+
 
 
 ```
