@@ -3,7 +3,7 @@ from flask import Flask, request, redirect, url_for, flash, session, g, abort, j
 from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
-from flask_cors import CORS, cross_origin
+#from flask_cors import CORS, cross_origin
 import json
 import os
 from flask import Flask, render_template, send_from_directory
@@ -11,7 +11,7 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 # Allow cross-origin requests (CORS)
-cors = CORS()
+#cors = CORS()
 
 # Secret key for session
 app.secret_key = 'A213FB1557589757D5ACEED'
@@ -115,8 +115,8 @@ def logout():
 """
 
 # Register
-@app.route("/signup", methods=["POST"])
-def signup_post():
+@app.route("/register", methods=["POST"])
+def register():
     data = request.get_json()
     print(data)
     hash = generate_password_hash(data["password"])

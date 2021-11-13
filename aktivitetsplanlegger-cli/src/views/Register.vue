@@ -25,7 +25,9 @@
                 <input type="email" id="email" name="email" placeholder="Email" required v-model="email">
                 <label>Passord:</label>
                 <input type="password" id="password" name="password" placeholder="Passord" required v-model="password">
-                <div v-if="passwordError">{{ passwordError }}</div>
+                <label>Gjenta passord:</label>
+                <input type="password" id="repeatPassword" name="repeatPassword" placeholder="Gjenta passord" required v-model="repeatPassword">
+                <div class="error" v-if="error">{{ error }}</div>
         </div>
     
         <input type="submit" value="Registrer ny bruker"><br>
@@ -44,18 +46,30 @@ export default {
   name: 'Register',
   data() {
       return {
-          username: '',
-          firstname: '',
-          lastname: '',
-          email: '',
-          password: '',
-          passwordError: ''
+          username: null,
+          firstname: null,
+          lastname: null,
+          email: null,
+          password: null,
+          repeatPassword: null,
+          error: null,
     }
   },  
   methods: {
     // signup user
     async handleSubmit() {
-        let response = await fetch(baseURL + "signup", {
+
+        // Error handling:
+        if (this.password != this.repeatPassword) {
+            this.error = "Passordene må være like.";
+            return 'error'
+        }
+        if (this.password.length < 5 ) {
+            this.error = "Passordet må inneholde minst 6 tegn."
+            return 'error'
+        }
+
+        let response = await fetch(baseURL + "register", {
             credentials: 'include',
             method: 'POST',
             headers: {
@@ -66,16 +80,15 @@ export default {
         if (response.status != 200){
             console.log("error")
             return 'error'
-            }
-        if (this.password.length < 5 ) {
-            this.passwordError = "Passordet må inneholde minst 6 tegn."
-            return 'error'
         }
+
         else {
+            this.username = this.password = this.firstname = this.lastname = this.repeatPassword = null;
             await alert("Du er registrert.");
             this.$router.push('/login')
         }
         console.log(response);
+
     },
   }
 }

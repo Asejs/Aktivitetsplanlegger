@@ -9,8 +9,8 @@
       <AddActivity/>
     </div>
 
-    <div style="color: white" v-if="!loggedIn">
-      Logg inn for å legge til en ny aktivitet
+    <div style="color: white;" v-if="!loggedIn">
+      <router-link to="/login"><u><b>Logg inn</b></u></router-link> for å legge til en ny aktivitet
     </div>
       
     <div id="content">

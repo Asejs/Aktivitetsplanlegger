@@ -60,9 +60,9 @@
             }
         },
         methods: {
-            // sign up button
-            signMeUp() {
-                console.log("signup")
+            // register button
+            register() {
+                console.log("register")
             },
             async get_activities() {
                 // get activites

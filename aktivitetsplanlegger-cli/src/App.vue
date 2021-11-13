@@ -59,6 +59,8 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+/* new font: */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100&display=swap');
 
 /* ----------------------------------------------- */
 
@@ -79,7 +81,9 @@ body {
     background-color: #aab39e;
     min-height: 100%;
     height: 100%;
-    font-family: 'Roboto', sans-serif;
+    font-size: 1.0em;
+    font-family: 'Open Sans', sans-serif;
+    weight: 100;
 }
 
 
@@ -106,8 +110,7 @@ h3 {
 
 h4 {
     color: #727272;
-    font-family: 'Roboto', sans-serif;
-    font-size: 0.9em;
+    font-size: 1.0em;
     font-weight: 700;
     line-height: 160%;
 }
@@ -115,8 +118,6 @@ h4 {
 
 p {
     color: #212121;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 0.8em;
     margin-top: 10px;
     margin-bottom: 10px;
 }
@@ -220,7 +221,7 @@ i {
     display: flex;
     flex-direction: column;
     height: 100px;
-    justify-content: flex-end;
+    justify-content: flex-start;
 }
 
 #login_buttons {
@@ -259,7 +260,7 @@ i {
     top: 120px;
     background-color: #909b83;
     width: 450px;
-    height: 680px;
+    height: 770px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -294,7 +295,14 @@ i {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    height: 350px;
+    height: 470px;
+}
+
+#register_form .error {
+    padding: 5px;
+    background-color: rgb(219, 81, 81);
+    border: rgb(119, 20, 20) solid 1px;
+    color: white;
 }
 
 #register input {
@@ -590,8 +598,6 @@ input[type=text], select, textarea {
     border: 1px solid #ccc;
     border-radius: 4px;
     resize: vertical;
-    font-family: 'Raleway', sans-serif;
-    font-size: 0.7em;
 }
 
 
@@ -601,8 +607,6 @@ input[type=date], input[type=password], input[type=email] {
     border: 1px solid #d2d2d2;
     border-radius: 4px;
     resize: vertical;
-    font-family: 'Raleway', sans-serif;
-    font-size: 0.7em;
 }
 
 input[type=submit] {
@@ -616,8 +620,6 @@ input[type=submit] {
     text-align: center;
     font-weight: 500;
     cursor: pointer;
-    font-family: 'Raleway', sans-serif;
-    font-size: 0.7em;
     float: right;
 }
 
@@ -633,7 +635,6 @@ input[type=submit]:hover {
 button {
     height: 40px;
     width: 150px;
-    font-size: 0.7em;
     background-color: #c28c62;
     border: none;
     border-radius: 6px;
@@ -676,7 +677,6 @@ label {
     text-align: right;
     padding-left: 20px;
     margin-bottom: 5px;
-    font-size: 0.9em;
 }
 
 .col-25 {
