@@ -2,42 +2,34 @@
 DAT310 Eksamensprosjekt
 
 ## How to run
-```
-1. Run the client-side Vue app in a terminal window
 
-    Commands:
-    cd aktivitetsplanlegger-cli
-    npm run serve
-
-    
-
-2. Run the server-side Flask app in a different terminal window
-
-    Commands:
-    cd aktivitetsplanlegger-cors
-    pip install -r requirements.txt
-    python3 app.py
+## 1. Run the client-side Vue app in a terminal window
 
 
-```
-
-* aktivitetsplanlegger-cors: Flask API that can be accessed using Cross Origin Requests.
-* aktivitetsplanlegger-cli: VueCLI application that accesses the Flask API.
-
-
-## Project setup
+Commands:
 ```
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
+cd aktivitetsplanlegger-cli
 npm run serve
 ```
 
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## 2. Run the server-side Flask app in a different terminal window
+
+Commands:
+```
+cd aktivitetsplanlegger-cors
+pip install -r requirements.txt
+python3 app.py
+```
+
+
+
+
+* aktivitetsplanlegger-cors:  Flask API that can be accessed using Cross Origin Requests.
+* aktivitetsplanlegger-cli:   VueCLI application that accesses the Flask API.
+
 
 
 ## Liste over funksjonalitet
