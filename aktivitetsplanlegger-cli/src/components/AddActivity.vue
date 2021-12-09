@@ -14,7 +14,7 @@
         </div>
 
         <div id="add_activity_form">
-            <form @submit.prevent="handleSubmit">
+            <form id="newactivity" method="POST" enctype="multipart/form-data" v-on:submit="publishPost">
                 <div class="row">
                     <div class="col-25">
                     <label for="title">Tittel:</label>
@@ -48,18 +48,15 @@
                     </div>
                 </div>
 
-
-                <!--<form action="upload.php" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-25">
                         <label for="fileToUpload">Velg et bilde:</label>
                     </div>
                     <div class="col-75">
-                        <input type="file" @change="onFileSelected" name="fileToUpload" id="fileToUpload">
-                        <button @click="onUpload">Upload</button>
+                        <input name="file" type="file" @change="onFileSelected" ref="uploadedFile" accept=".jpg, .JPG, .jpeg, .JPEG, .png, .PNG, .webp">
+                        <!--<button @click="onUpload">Upload</button>-->
                     </div>
-                    </div>
-                    </form>-->
+                </div>
 
 
                 <div class="row">
@@ -88,11 +85,32 @@ let baseURL = "http://127.0.0.1:5000/";
               location: '',
               description: '',
               isVisible: false,
+              imgFile: null,
           }
       },
+      /*watch: {
+          '$route': function() {
+              this.reLoadPosts();
+            }
+        },*/
       
       methods: {
-          async handleSubmit() {
+        /*reLoadPosts: async function() {
+            await getPostsReload(this, this.$route.path, this.$route.params.id);
+        },*/
+
+        // imgFile blir satt til valgt bilde
+        onFileSelected(event) {
+            console.log(event)
+            this.imgFile = event.target.files[0]
+            console.log(this.imgFile)
+        },
+
+        async publishPost() {
+            event.preventDefault();
+            //this.imgFile = this.$refs.uploadedFile.file;
+
+
             let username = sessionStorage.getItem("username")
             console.log(username)
 
@@ -104,30 +122,27 @@ let baseURL = "http://127.0.0.1:5000/";
                 },
                 body: JSON.stringify({ username: username, title: this.title, date: this.date, location: this.location, description: this.description })
             });
-            if (response.status == 404){
-                console.log("No user logged in!")
-                return
-            }
-            else {
-                console.log("Lagt til aktivitiet: ", this.title)
-                alert("Lagt til aktivitet.");
-            }
-            window.location.reload(true)
-        },
-      }
-      /*
-      methods: {
-          onFileSelected(event) {
-              console.log(event)
-              this.selectedFile = event.target.files[0]
-          },
-          onUpload() {
-              post request
-              const fd = new FormData()
-              fd.append('image', this.selectedFile, this.selectedFile)
+            console.log(response)
 
-              }
-            */
+            console.log("MY FILE:", this.imgFile)
+            console.log("NAME:", this.imgFile.name)
+
+            //post request
+            //uses formdata since you can't convert images to json...
+            let formData = new FormData();
+
+            formData.append("file", this.imgFile, this.imgFile.name);
+            console.log("FORMDATA:", formData)
+
+            let imgresponse = await fetch(baseURL + "upload_image", {
+                credentials: 'include',
+                method: 'POST',
+                body: formData,
+            });
+            console.log("IMGRESPONSE", imgresponse)
+            await this.$router.push('/activities');
+        },
+    }
 }
 
 </script>

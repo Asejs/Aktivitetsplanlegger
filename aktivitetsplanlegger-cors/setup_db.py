@@ -32,14 +32,15 @@ def create_activity_table(conn):
     cur = conn.cursor()
     try:
         sql = ("CREATE TABLE activities ("
-               "activity_id INTEGER NOT NULL,"
+               "activity_id INTEGER PRIMARY KEY NOT NULL,"
                "username INTEGER NOT NULL,"
                "title VARCHAR(40) NOT NULL,"
                "date DATE NOT NULL,"
                "location VARCHAR(40) NOT NULL,"
                "description TEXT NOT NULL,"
-               "PRIMARY KEY(activity_id),"
-               "FOREIGN KEY(username) REFERENCES users(username) )"
+               "image TEXT UNIQUE,"
+               "FOREIGN KEY(username) REFERENCES users(username) ON DELETE CASCADE,"
+               "FOREIGN KEY(image) REFERENCES images(fpath) ON DELETE CASCADE )"
                )
         cur.execute(sql)
         conn.commit
@@ -68,6 +69,28 @@ def create_participation_table(conn):
         print("Table created.")
     finally:
         cur.close()
+
+
+# Create new images table
+def create_images_table(conn):
+    """Create images table."""
+    cur = conn.cursor()
+    try:
+        sql = ("CREATE TABLE images ("
+               "imageid INTEGER PRIMARY KEY NOT NULL, "
+               "fpath TEXT UNIQUE,"
+               "activity_id INTEGER,"
+               "FOREIGN KEY (activity_id) REFERENCES activities(activity_id) ON DELETE CASCADE )"
+        )
+        cur.execute(sql)
+        conn.commit
+    except sqlite3.Error as err:
+        print("Error: {}".format(err))
+    else:
+        print("Table created.")
+    finally:
+        cur.close()
+
 
 
 # add user
@@ -104,6 +127,44 @@ def add_new_activity(conn, username, title, date, location, description):
         return cur.lastrowid
     finally:
         cur.close()
+
+
+# add new image
+def add_new_image(conn, fpath, activity_id):
+    """Add new image. Returns the new image_id"""
+    cur = conn.cursor()
+    try:
+        sql = ("INSERT INTO images (fpath, activity_id) VALUES (?,?)")
+        cur.execute(sql, (fpath, activity_id))
+        conn.commit()
+    except sqlite3.Error as err:
+        print("Error: {}".format(err))
+        return -1
+    else:
+        print("Image {} added with activity_id {}.".format(fpath, cur.lastrowid))
+        return cur.lastrowid
+    finally:
+        cur.close()
+
+def update_image_activity(conn, activity_id):
+    """Add new image. Returns the new image_id"""
+    cur = conn.cursor()
+    try:
+        sql = ("SELECT MAX(activity_id) FROM table activities")
+        cur.execute(sql, (fpath, activity_id))
+        conn.commit()
+    except sqlite3.Error as err:
+        print("Error: {}".format(err))
+        return -1
+    else:
+        print("Image {} added with activity_id {}.".format(fpath, cur.lastrowid))
+        return cur.lastrowid
+    finally:
+        cur.close()
+
+
+
+
 
 # add participation
 def add_new_pacticipation(conn, userid, activity_id):
@@ -284,6 +345,101 @@ def get_hash_for_login(conn, username):
     finally:
         cur.close()
 
+#return a image from an activity
+def get_activity_image(conn, activity_id):
+    """Get user details by id."""
+    cur = conn.cursor()
+    try:
+        sql = ("SELECT fpath FROM images WHERE activity_id = ?")
+        cur.execute(sql, (activity_id,))
+        for row in cur:
+            (fpath,) = row
+            return fpath
+        else:
+            #if image does not exist
+            return None
+    except sqlite3.Error as err:
+        print("Error: {}".format(err))
+    finally:
+        cur.close()
+
+
+# get all activites
+def get_all_images(conn):
+    """Get all images"""
+    cur = conn.cursor()
+    try:
+        sql = ("SELECT fpath, activity_id FROM images")
+        cur.execute(sql)
+        images = []
+        for row in cur:
+            (fpath, activity_id) = row
+            images.append({
+                "fpath": fpath,
+                "activity_id": activity_id,
+            })
+        return images
+    except sqlite3.Error as err:
+        print("Error: {}".format(err))
+    finally:
+        cur.close()
+
+# -------- BILDEOPPLASTNING ------
+'''
+
+
+#return a list of images from a post
+def get_post_image(conn, pid):
+    img_list = []
+    images = conn.execute(
+            'SELECT fpath, fcpath FROM images'
+            ' WHERE pid = ?'
+            ' ORDER BY iid DESC',
+            (pid,)
+            ).fetchall()
+    for (fpath, fcpath) in images:
+        img_list.append({
+            "imgpath": fpath,
+            "compressed": fcpath
+            })
+    return img_list
+
+
+#return a list of images from a post belonging to the user
+def get_post_image_user(conn, pid, uid):
+    img_list = []
+    images = conn.execute(
+            'SELECT i.fpath, i.fcpath FROM images i'
+            ' LEFT JOIN post p ON i.pid = p.pid'
+            ' WHERE i.pid = ? AND p.uid = ?'
+            ' ORDER BY iid DESC',
+            (pid, uid)
+            ).fetchall()
+    for (fpath, fcpath) in images:
+        img_list.append({
+            "imgpath": fpath,
+            "compressed": fcpath
+            })
+    return img_list
+
+
+#adds the imagepath and post_id to the image-table
+def create_image(conn, filename, post_id):
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+                'INSERT INTO images(fpath, pid) VALUES(?,?)',
+                (filename, post_id)
+                )
+        conn.commit()
+    except sqlite3.Error as err:
+        cursor.close()
+        return None, err
+    row_id = cursor.lastrowid
+    cursor.close()
+    return row_id, None
+    
+'''
 
 if __name__ == "__main__":
     try:
@@ -295,6 +451,8 @@ if __name__ == "__main__":
         create_user_table(conn)
         create_activity_table(conn)
         create_participation_table(conn)
+        create_images_table(conn)
+
 
         # example user data:
         add_user(conn, "johndoe", "John", "Doe", "johndoe@gmail.com", generate_password_hash("Joe123"), "user")

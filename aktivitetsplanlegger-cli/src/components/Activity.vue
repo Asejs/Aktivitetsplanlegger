@@ -9,6 +9,7 @@
     <div id="activity_list" v-for="activity in filteredList" v-bind:key="activity">
         <div id="img_container">
             <img src="@/assets/default.png"/>
+            <!--<img src="{{ url_for('display_image', filename='bilde23.png') }}" />-->
         </div>
 
 
@@ -53,10 +54,13 @@
         data() {
             return {
                 activities: [],
+                images: [],
+                image: "",
+                activity_image: "",
                 userid: "",
                 activity: "",
                 search: "",       
-                loggedInUsername: ""   
+                loggedInUsername: ""
             }
         },
         methods: {
@@ -73,6 +77,25 @@
                 }
                 let result = await response.json();
                 this.activities = result;
+            },
+            async get_activity_image() {
+                let response = await fetch(baseURL + "activity_image_get");
+                if (response.status != 200){
+                    console.log("Failed to get activity image");
+                    return ""
+                }
+                let result = await response.json();
+                this.activity_image = result;
+            },
+            async get_images() {
+                // get images
+                let response = await fetch(baseURL + "images_get");
+                if (response.status != 200){
+                    console.log("Failed to get image");
+                    return ""
+                }
+                let result = await response.json();
+                this.images = result;
             },
             // remove activity
             async removeItem(activity) {
