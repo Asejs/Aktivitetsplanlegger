@@ -58,7 +58,7 @@ Nye brukere blir lagret i databasen.
     * Home, Activities, Login, Register, NotFound
 
 
-# For test av login
+## For test av login
 
 Kan logge inn med:
 - **Brukernavn**: aase
