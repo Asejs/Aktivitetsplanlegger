@@ -3,10 +3,9 @@ DAT310 Eksamensprosjekt
 
 ## How to run
 
-## 1. Run the client-side Vue app in a terminal window
+### 1. Run the client-side Vue app in a terminal window
 
 
-Commands:
 ```
 npm install
 cd aktivitetsplanlegger-cli
@@ -15,15 +14,16 @@ npm run serve
 
 
 
-## 2. Run the server-side Flask app in a different terminal window
+### 2. Run the server-side Flask app in a different terminal window
 
-Commands:
 ```
-cd aktivitetsplanlegger-cors
 pip install -r requirements.txt
 python3 app.py
 ```
-
+If the database does not exist, run
+```
+python3 setup_db.py
+```
 
 
 
@@ -47,8 +47,9 @@ Brukerens brukernavn, fornavn og etternavn lagres i sessionStorage, for å lett 
 
 - Hvis man ikke er registrert som bruker kan man registrere seg ved å trykke inn på "Logg inn", og videre på "Registrer ny bruker".
 Nye brukere blir lagret i databasen.
-- Dersom brukeren har lagt ut aktiviteter, er det mulig å slette dem hvis det er egne aktiviteter.
-- Det lastes opp et "default-bilde" når en ny aktivitet blir lagt til.
+
+- Dersom brukeren har lagt ut aktiviteter, er det mulig å slette eller redigere dem hvis det er egne aktiviteter.
+- Brukeren kan laste opp et bilde med aktiviteten.
 - Det er mulig å filtrere/søke i aktivitetene etter tittel, brukernavn, sted og beskrivelsen.
 
 - Når man registreres som ny bruker må passordet være lengre enn 6 tegn, ellers kommer det oppe en feilmelding. Det kreves at alle feltene i registreringen må fylles ut.
@@ -57,6 +58,9 @@ Nye brukere blir lagret i databasen.
     * Home, Activities, Login, Register, NotFound
 
 
-For test av login:
-- Kan logge inn med brukernavn: JohnDoe, passord: Joe123.
+## For test av login
+
+Kan logge inn med:
+- **Brukernavn**: aase
+- **Passord**: passord
 
