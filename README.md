@@ -62,6 +62,6 @@ Nye brukere blir lagret i databasen.
 
 # For test av login:
 Kan logge inn med:
-- **brukernavn**: aase
-- **passord**: passord
+- **Brukernavn**: aase
+- **Passord**: passord
 
