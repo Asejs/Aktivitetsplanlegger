@@ -3,10 +3,9 @@ DAT310 Eksamensprosjekt
 
 ## How to run
 
-## 1. Run the client-side Vue app in a terminal window
+### 1. Run the client-side Vue app in a terminal window
 
 
-Commands:
 ```
 npm install
 cd aktivitetsplanlegger-cli
@@ -15,9 +14,8 @@ npm run serve
 
 
 
-## 2. Run the server-side Flask app in a different terminal window
+### 2. Run the server-side Flask app in a different terminal window
 
-Commands:
 ```
 pip install -r requirements.txt
 python3 app.py
