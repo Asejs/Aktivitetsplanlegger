@@ -129,12 +129,11 @@ i {
 }
 
 
-
 #home_description {
     margin-right: auto;
     margin-left: auto;
     position: relative;
-    top: 500px;
+    top: 400px;
     color: white;
     background-color: #789778;
     border-radius: 10px;
