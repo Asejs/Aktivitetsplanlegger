@@ -1,16 +1,21 @@
 <template>
 
 <main>
-    <h1 v-if="loggedIn" style="color: white">Velkommen {{ firstname }} {{ lastname }}!</h1>
-    <h1 v-if="!loggedIn" style="color: white">Velkommen!</h1>
-    <h1 style="color: white">Utforsk aktiviteter</h1>
+    <h1 v-if="loggedIn">Velkommen {{ firstname }} {{ lastname }}!</h1>
+    <h1 v-if="!loggedIn">Velkommen!</h1>
+    <h1>Utforsk aktiviteter</h1>
         
     <div v-if="loggedIn">
       <AddActivity/>
     </div>
+    <div v-if="!loggedIn">
+      <div id="container">
+        <div id="buttons">
+            <button style="opacity: 60%" @click="isVisible = true">+ Legg til ny aktivitet</button>
+            <p style="color: white"><router-link to="/login" style="color: white"><u><b>Logg inn</b></u></router-link> for å legge til en ny aktivitet</p>
 
-    <div style="color: white;" v-if="!loggedIn">
-      <router-link to="/login"><u><b>Logg inn</b></u></router-link> for å legge til en ny aktivitet
+        </div>
+      </div>
     </div>
       
     <div id="content">
@@ -25,6 +30,7 @@
 <script>
 import AddActivity from '../components/AddActivity';
 import Activity from '../components/Activity';
+
 
 export default {
   name: 'Aktiviteter',

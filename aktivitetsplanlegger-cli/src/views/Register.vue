@@ -1,13 +1,12 @@
 <template>
 
-<div id="register">
+<div id="register" class="bg-color">
 
     <div id="back_button">
         <router-link to="/login">
         <button type="button"><i class="fa fa-chevron-left fa-2x"></i></button>
         </router-link>
     </div>
-    
 
     <div id="register_text">
     <h2>Registrer ny bruker</h2>
@@ -27,17 +26,14 @@
                 <input type="password" id="password" name="password" placeholder="Passord" required v-model="password">
                 <label>Gjenta passord:</label>
                 <input type="password" id="repeatPassword" name="repeatPassword" placeholder="Gjenta passord" required v-model="repeatPassword">
-                <div class="error" v-if="error">{{ error }}</div>
-        </div>
-    
+        </div>    
+        <div id="error" v-if="error">{{ error }}</div>
         <input type="submit" value="Registrer ny bruker"><br>
     </form>
 
 </div>
 
 </template>
-
-
 
 <script>
 let baseURL = "http://127.0.0.1:5000/";
@@ -58,16 +54,26 @@ export default {
   methods: {
     // signup user
     async handleSubmit() {
+        event.preventDefault();
 
-        // Error handling:
+        // Password error handling:
         if (this.password != this.repeatPassword) {
             this.error = "Passordene må være like.";
             return 'error'
         }
+        
         if (this.password.length < 5 ) {
             this.error = "Passordet må inneholde minst 6 tegn."
             return 'error'
         }
+
+        let user = {
+            "username": this.username,
+            "firstname": this.firstname,
+            "lastname": this.lastname,
+            "email": this.email,
+            "password": this.password,
+        };
 
         let response = await fetch(baseURL + "register", {
             credentials: 'include',
@@ -75,20 +81,19 @@ export default {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ username: this.username, firstname: this.firstname, lastname: this.lastname, email: this.email, password: this.password })
+            body: JSON.stringify(user)
         });
-        if (response.status != 200){
-            console.log("error")
-            return 'error'
-        }
+        console.log(result)
+        let result = await response.json();
 
-        else {
-            this.username = this.password = this.firstname = this.lastname = this.repeatPassword = null;
+        if (result['register'] == "success") {
+            this.username = this.firstname = this.lastname = this.password = this.repeatPassword = null;
             await alert("Du er registrert.");
             this.$router.push('/login')
         }
-        console.log(response);
-
+        else {
+            this.error = result['error'];
+        }
     },
   }
 }

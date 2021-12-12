@@ -11,7 +11,7 @@
                 <input type="text" id="username" name="username" placeholder="Brukernavn" required v-model="username">
                 <label for="password">Passord:</label>
                 <input type="password" id="password" name="password" placeholder="Passord" required v-model="password">
-                <div v-if="passwordError">{{ passwordError }}</div>
+                <div id="error" v-if="error">{{ error }}</div>
         </div>
 
     <div id="login_buttons">
@@ -35,12 +35,16 @@ export default {
         username: '',
         password: '',
         passwordError: '',
+        error: false,
         loggedIn: false
     }
   },
   methods: {
       // Login user
       async handleSubmit() {
+        event.preventDefault();
+        this.error = null;
+
         let response = await fetch(baseURL + "login", {
             credentials: 'include',
             method: "POST",
@@ -50,9 +54,11 @@ export default {
             body: JSON.stringify({ username: this.username, password: this.password })
         });
         if (response.status != 200) {
-            console.log("error")
+            this.error = "Feil passord eller brukernavn"
+            return
         }
         let user = await response.json();
+        this.loggedIn = true;
 
         // Store user's username, firstname, lastname in sessionStorage
         sessionStorage.setItem("username", user["username"]);
@@ -60,13 +66,16 @@ export default {
         sessionStorage.setItem("lastname", user["lastname"]);
 
         // reload page (login-button changes to logout-button)
-        window.location.reload(true)
-      }
+        this.$router.go()
+      },
     },
-    created() {
-        // Check if the user is logged in
+    mounted() {
         if (sessionStorage["username"]) {
-            this.loggedIn = true;
+            this.loggedIn = true
+            console.log(this.loggedIn)
+        }
+        if (this.loggedIn == true) {
+            this.$router.push('/activities')
         }
     }
 }

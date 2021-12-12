@@ -1,8 +1,7 @@
 <template>
-
-<div id="homepage">
-    <img src="@/assets/aktivitet.png"><br>
-
+<div>
+    <div id="homepage" style="overflow: hiddden">
+    </div>
     <div id="home_description">
         Velkommen til<br>
         <img src="@/assets/logo.png"><br>
