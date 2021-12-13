@@ -211,7 +211,6 @@ def get_all_activities(conn):
                 "participants": participants,
                 "created": created,
             })
-        print(activities[1])
         return activities
     except sqlite3.Error as err:
         print("Error: {}".format(err))
@@ -225,12 +224,13 @@ def get_all_activities_date(conn):
     try:
         sql = (
             "SELECT username, activity_id, title, date, location, description, image,"
+            "(SELECT COUNT(*) FROM participations WHERE participations.activity_id = activities.activity_id) AS participants,"
             "created FROM activities WHERE DATE(date) >= DATE() ORDER BY date"
         )
         cur.execute(sql)
         activities = []
         for row in cur:
-            (username, activity_id, title, date, location, description, image, created) = row
+            (username, activity_id, title, date, location, description, image, participants, created) = row
             activities.append({
                 "username": username,
                 "activity_id": activity_id,
@@ -239,7 +239,8 @@ def get_all_activities_date(conn):
                 "location": location,
                 "description": description,
                 "image": image,
-                "created": created
+                "participants": participants,
+                "created": created,
             })
         return activities
     except sqlite3.Error as err:
@@ -254,11 +255,13 @@ def get_activities_by_username(conn, username):
     """Get all activites by username"""
     cur = conn.cursor()
     try:
-        sql = ("SELECT username, activity_id, title, date, location, description, image, created FROM activities WHERE username = ?")
+        sql = ("SELECT username, activity_id, title, date, location, description, image,"
+        "(SELECT COUNT(*) FROM participations WHERE participations.activity_id = activities.activity_id) AS participants,"
+        "created FROM activities WHERE username = ?")
         cur.execute(sql, (username,))
         activities = []
         for row in cur:
-            (username, activity_id, title, date, location, description, image, created) = row
+            (username, activity_id, title, date, location, description, image, participants, created) = row
             activities.append({
                 "username": username,
                 "activity_id": activity_id,
@@ -267,7 +270,8 @@ def get_activities_by_username(conn, username):
                 "location": location,
                 "description": description,
                 "image": image,
-                "created": created
+                "participants": participants,
+                "created": created,
             })
         return activities
     except sqlite3.Error as err:
@@ -280,16 +284,29 @@ def get_activities_user_participation(conn, username):
     """Get all activites that the user is signed up for"""
     cur = conn.cursor()
     try:
-        sql = ("SELECT activity_id FROM participations WHERE username = ?")
-        cur.execute(sql, (username,))
-        participation_activities = []
+        sql = ("SELECT a.username, p.activity_id, a.title, a.date, a.location, a.description, a.image,"
+                " (SELECT COUNT(*) FROM participations WHERE a.activity_id = participations.activity_id) AS participants, a.created"
+                " FROM activities a"
+                " LEFT JOIN participations p"
+                " ON a.activity_id = p.activity_id"
+                " WHERE p.username = ? OR a.username = ?")
+        cur.execute(sql, (username, username))
+        activities = []
         for row in cur:
-            (activity_id,) = row
-            participation_activities.append({
+            (username, activity_id, title, date, location, description, image, participants, created) = row
+            activities.append({
+                "username": username,
                 "activity_id": activity_id,
+                "title": title,
+                "date": date,
+                "location": location,
+                "description": description,
+                "image": image,
+                "participants": participants,
+                "created": created,
             })
-        print(participation_activities)
-        return participation_activities
+        print("PARTICIPATION", activities)
+        return activities
     except sqlite3.Error as err:
         print("Error: {}".format(err))
     finally:
@@ -455,9 +472,9 @@ if __name__ == "__main__":
 
         
         # add new activities:
-        add_new_activity(conn, "aase", "Joggetur rundt Mosvannet",  "2021-12-14", "Stavanger", "Bli med på en rolig joggetur rundt Mosvannet.\n\nStarter kl 10 om morgenen.", "jogge.jpg")
-        add_new_activity(conn, "maribj", "Tur til Preikestolen",  "2021-12-13", "Preikestolen", "SIS arrangerer tur til Preikestolen.\n\nMer informasjon kommer!", "preikestolen.jpg")
-        add_new_activity(conn, "livesa", "Digital Paint'n Sip",  "2021-12-12", "Online", "DIGITAL PAINT'N SIP \n\n Noen som har lyst til å bli med på Paint'n Sip den 15.desember? \n Meld deg på!", "paintnsip.png")
+        add_new_activity(conn, "aase", "Joggetur rundt Mosvannet",  "2021-12-15", "Stavanger", "Bli med på en rolig joggetur rundt Mosvannet.\n\nStarter kl 10 om morgenen.", "jogge.jpg")
+        add_new_activity(conn, "maribj", "Tur til Preikestolen",  "2021-12-16", "Preikestolen", "SIS arrangerer tur til Preikestolen.\n\nMer informasjon kommer!", "preikestolen.jpg")
+        add_new_activity(conn, "livesa", "Digital Paint'n Sip",  "2021-12-15", "Digitalt", "DIGITAL PAINT'N SIP \n\n Har du lyst til å bli med på Paint'n Sip den 15.desember? \n Meld deg på! \n\n Du får tilsendt maling og lerret.", "paintnsip.png")
         add_new_activity(conn, "jorgen", "Grilling",  "2022-06-06", "Godalen", "Grilling ved Godalen", "grill.jpg")
 
 

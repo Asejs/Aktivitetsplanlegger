@@ -10,10 +10,7 @@ import os
 from flask import Flask, render_template, send_from_directory, make_response
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
-from flask_session import Session
-from flask.sessions import SecureCookieSessionInterface
 import datetime
-from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)

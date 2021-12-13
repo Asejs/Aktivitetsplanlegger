@@ -3,18 +3,22 @@
 
 <div id="activity">
     <div id="row">
-        <input type="submit" @click="get_activities_user_paticipation()" value="Påmeldte aktiviteter">
         <input type="submit" @click="get_activities_by_username()" value="Mine aktiviteter">
+        <input type="submit" @click="get_activities_user_paticipation()" value="Påmeldte aktiviteter">
     </div>
     <br/>
+
     <div id="search">
-        <input type="text" v-model="search" placeholder="Søk .."/>
+        <div id="row"><input type="text" v-model="search" placeholder="Søk .."/></div>
+        <div id="row">
+            <span style="color: white; display: inline">Sorter etter:
+                <select @change="onChange($event)" placeholder="Sorter"  v-model="key">
+                    <option selected value="1">Nylig lagt til</option>
+                    <option value="2">Førstkommende dato</option>
+                </select>
+            </span>
+        </div>
     </div>
-    <div id="row">
-        <p style="color: white; display: inline">Sorter etter:</p><input type="submit" @click="orderByDate()" value="Førstkommende dato">
-        <input type="submit" @click="get_activities" value="Nylig lagt til">
-    </div>
-    <br/>
 
 
     <div id="activities">
@@ -44,7 +48,6 @@
                         <span v-if="activity.participants == 0">Ingen deltakere enda</span>
                         <span v-if="activity.participants == 1">{{ activity.participants }} deltaker</span>
                         <span v-if="activity.participants > 1">{{ activity.participants }} deltakere</span></h4>
-                        <h4>{{ activity.participants }}</h4>
                     </div>
 
                     <div id="activity_buttons">
@@ -87,7 +90,7 @@
 
                         <div id="activity_buttons">
                             <div class="flex">
-                                <input type="submit" @click.once="signMeUp()" value="Meld meg på">
+                                <input type="submit" v-if="loggedInUsername != activity.username" @click.once="signMeUp()" value="Meld meg på">
                             </div>
                         </div>
                     </div>
@@ -131,9 +134,19 @@ export default {
             loggedInUsername: null,
             dateToday: null,
             acitivty_participation: null,
+            key: null,
         }
     },
     methods: {
+        onChange(event) {
+            console.log(event.target.value)
+            if (event.target.value == 1) {
+                this.get_activities()
+            }
+            if (event.target.value == 2) {
+                this.orderByDate()
+            }
+        },
         async get_activities() {
             // get activites
             let response = await fetch(baseURL + "activities_get");
@@ -187,8 +200,7 @@ export default {
             if (result == null) {
                 alert("Du er ikke påmeldt noen aktiviteter enda.")
             } else {
-                this.activities_participation = result;
-                console.log(result)
+                this.activities = result;
             }
         },
         // remove activity

@@ -479,7 +479,11 @@ main {
 
 
 #search {
+    display: flex;
+    flex-direction: row;
     margin-bottom: 20px;
+    justify-content: space-between;
+
 }
 
 #activity{
@@ -608,7 +612,24 @@ input {
     width: 200px;
 } 
 
-input[type=text], select, textarea {
+select {
+    width: 200px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    resize: vertical;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+}
+
+#row {
+    width: 292px;
+    display: flex;
+    justify-content: flex-end;
+    justify-content: space-between;
+}
+
+input[type=text], textarea {
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
@@ -640,9 +661,14 @@ input[type=file] {
     line-height: 70px;
 }
 
+#row input[type=submit] {
+    width: 200px;
+    margin-right: 5px;
+}
+
 input[type=submit] {
     height: 40px;
-    width: 160px;
+    width: 165px;
     background-color: #8caa8e;
     border: none;
     border-radius: 10px;
@@ -652,6 +678,8 @@ input[type=submit] {
     font-weight: 500;
     cursor: pointer;
     float: right;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.9em;
 }
 
 #buttons input[type=submit]{
